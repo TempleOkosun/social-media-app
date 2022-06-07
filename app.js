@@ -2,18 +2,21 @@ const express = require('express')
 const app = express()
 
 const morgan = require('morgan')
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser')
 const dotenv = require('dotenv')
 dotenv.config()
 
 // Import routes
-const postRoutes = require('./routes/post')
+const authRoutes = require('./routes/auth')
 
 
 // Middlewares
 app.use(morgan("dev"))
-
-// App route
-app.use('/', postRoutes);
+app.use(bodyParser.json());
+app.use(cookieParser())
+// Used imported App route as middleware
+app.use('/', authRoutes);
 
 
 // db
