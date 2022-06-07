@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
+const expressJwt = require('jsonwebtoken')
+const jwt = require('express-jwt')
 
 require('dotenv').config()
 
@@ -53,6 +54,9 @@ exports.authorizeUser = async (req, res) => {
     } catch (e) {
         res.status(500).json({message: 'Something went wrong'})
     }
+}
 
-
+exports.logout = (req, res) => {
+    res.clearCookie("t")
+    res.json({message: 'Signed out successfully'})
 }
