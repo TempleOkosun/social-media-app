@@ -1,53 +1,41 @@
+const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+
 require('dotenv').config()
 
 const User = require("../models/user")
 
 exports.register = async (req, res) =>{
-    const userExists = await User.findOne({email: req.body.email})
+    const {email, password, confirmPassword, name} = req.body
 
-    if(userExists) return res.status(403).json({
-        error: "A user with the email already exists."
-    })
+    try{
+        const userExists = await User.findOne({email})
 
-    const user = await new User(req.body)
-    await user.save()
-    res.status(200).json({message:`Registration successful. Please login `})
+        if(userExists) return res.status(400).json({
+            message: "User already exists."
+        })
 
+        if(password !== confirmPassword) res.status(400).json({
+            message: "Passwords do not match!"
+        })
+
+        const salt = await bcrypt.genSalt(12)
+        const hashedPassword = await bcrypt.hash(password, salt)
+        const user = await User.create({email, password:hashedPassword, name})
+        const token = jwt.sign({email, id:user._id},process.env.JWT_SECRET, "test", {expiresIn: "1h"})
+
+        res.status(200).json({message:`Registration successful. Please login `, token})
+
+    }catch (e) {
+        res.status(500).json({message: 'Something went wrong'})
+    }
 }
 
 exports.authorizeUser = async (req, res) => {
     // find the user based on the email
     const {email, password} = req.body
-    // User.findOne({email}, (err, user) => {
-    //     // if error or no user
-    //     if(err || !user){
-    //         return res.status(401).json({
-    //             error: `User with that email does not exist.`
-    //         })
-    //     }
-    //     // if user found, authenticate
-    //
-    // })
-
     const userData = await  User.findOne({email})
-
     const savedPassword = userData['password']
-    console.log(savedPassword)
-    res.status(200).json({message: `login successful`})
-    const isAuthorized = await compare(password, savedPassword)
-    return isAuthorized
-
-
-
-
-
-
-
-
-
-
-    // generate a token with user id and secret
-
-    // persist the token as 't' in cookie with expiry date
+    const isAuthorized = await  bcrypt.compare(password, savedPassword)
+    return {isAuthorized, userId: userData._id}
 }
