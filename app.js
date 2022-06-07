@@ -16,7 +16,9 @@ app.use(morgan("dev"))
 app.use(bodyParser.json());
 app.use(cookieParser())
 // Used imported App route as middleware
-app.use('/', authRoutes);
+app.use('/api', authRoutes);
+
+
 
 
 // db

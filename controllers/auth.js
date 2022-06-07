@@ -22,9 +22,9 @@ exports.register = async (req, res) =>{
         const salt = await bcrypt.genSalt(12)
         const hashedPassword = await bcrypt.hash(password, salt)
         const user = await User.create({email, password:hashedPassword, name})
-        const token = jwt.sign({email, id:user._id},process.env.JWT_SECRET,{expiresIn: "1h"})
+        // const token = jwt.sign({_id:user._id}, process.env.JWT_SECRET,{expiresIn: process.env.JWT_EXPIRES_TIME})
 
-        res.status(200).json({message:`Registration successful. Please login `, token})
+        res.status(200).json({message:`Registration successful. Please login `})
 
     }catch (e) {
         res.status(500).json({message: 'Something went wrong'})
@@ -36,20 +36,23 @@ exports.authorizeUser = async (req, res) => {
     const {email, password} = req.body
 
     try{
-        const existingUser = await  User.findOne({email})
-        if(!existingUser) return res.status(404).json({message: 'User does not exist!'})
-        const savedPassword = existingUser['password']
+        const user = await  User.findOne({email})
+        if(!user) return res.status(401).json({message: 'User does not exist!', })
+        const savedPassword = user['password']
         const isAuthorized = await  bcrypt.compare(password, savedPassword)
-        if(!isAuthorized) return res.status(404).json({message:'Invalid credentials'})
+        if(isAuthorized){
+            const token = jwt.sign({_id:user._id}, process.env.JWT_SECRET,{expiresIn: process.env.JWT_EXPIRES_TIME})
+            const {_id, name, email} = user
+            res.cookie("t", token, {expire: new Date() + 9999, httpOnly:true})
+            res.status(200).json({token, user: {_id, email,name}})
 
-        const token = jwt.sign({email, id:user._id}, process.env.JWT_SECRET, {expiresIn: "1h"})
+        } else{
+            res.status(404).json({message:'Invalid credentials'})
+        }
 
-        res.status(200).json({message:`Login successful.`, token})
     } catch (e) {
         res.status(500).json({message: 'Something went wrong'})
     }
-
-
 
 
 }
