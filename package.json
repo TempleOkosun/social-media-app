@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon app.js",
     "lint": "prettier --check .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "prettier-watch": "onchange '.' -- prettier --write {{changed}}"
   },
   "keywords": [
     "node",
@@ -30,6 +31,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
     "nodemon": "^2.0.16",
+    "onchange": "^7.1.0",
     "prettier": "^2.6.2"
   }
 }
