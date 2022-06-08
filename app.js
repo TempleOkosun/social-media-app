@@ -10,7 +10,6 @@ dotenv.config()
 // Import routes
 const authRoutes = require('./routes/auth')
 
-
 // Middlewares
 app.use(morgan("dev"))
 app.use(bodyParser.json());
@@ -23,6 +22,7 @@ app.use('/api', authRoutes);
 
 // db
 const mongoose = require('mongoose')
+
 const mongoURL = process.env.MONGO_URI
 mongoose.connect(mongoURL, { useUnifiedTopology: true, useNewUrlParser: true })
 const connection = mongoose.connection

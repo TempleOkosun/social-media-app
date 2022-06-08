@@ -1,13 +1,14 @@
 const express = require('express');
 const router = express.Router();
 
-const {register, authorizeUser, logout, requireSignin} = require('../controllers/auth')
+const {auth} = require('../middleware/auth')
+const {register, authorizeUser, logout} = require('../controllers/auth')
 const {userById} = require('../controllers/user')
 
 router.post("/register", register)
 router.post('/login', authorizeUser);
-router.get('/logout', logout);
-router.get('/posts', requireSignin, (req, res) =>{
+router.get('/logout', auth, logout);
+router.get('/posts', auth, (req, res) =>{
     res.json({
         posts:[{title:"First post"}, {title: "Second post"}]
     })

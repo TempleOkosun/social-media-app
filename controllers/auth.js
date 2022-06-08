@@ -42,7 +42,8 @@ exports.authorizeUser = async (req, res) => {
         if(isAuthorized){
             const token = jwt.sign({_id:user._id}, process.env.JWT_SECRET,{expiresIn: process.env.JWT_EXPIRES_TIME})
             const {_id, name, email} = user
-            res.cookie("t", token, {expire: new Date() + 9999, httpOnly:true})
+            // persist the token as 't' in cookie with expiry date
+            res.cookie("token", token, {expire: new Date() + 9999, httpOnly:true})
             res.status(200).json({token, user: {_id, email,name}})
 
         } else{
@@ -55,19 +56,7 @@ exports.authorizeUser = async (req, res) => {
 }
 
 exports.logout = (req, res) => {
-    res.clearCookie("t")
+    res.clearCookie("token")
     res.json({message: 'Signed out successfully'})
 }
 
-
-exports.requireSignin = async (req, res, next) => {
-    const{token} = req.cookies
-    if(!token){
-        return res.status(401).json({message: `You have to be logged in to access this resource`})
-    }
-    console.log(token)
-    const decoded = jwt.verify(token, process.env.JWT_SECRET)
-    req.user = await User.findById(decoded._id)
-
-    next()
-}
