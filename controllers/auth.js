@@ -1,6 +1,5 @@
 const bcrypt = require('bcryptjs')
-const expressJwt = require('jsonwebtoken')
-const jwt = require('express-jwt')
+const jwt = require('jsonwebtoken')
 
 require('dotenv').config()
 
@@ -23,9 +22,8 @@ exports.register = async (req, res) =>{
         const salt = await bcrypt.genSalt(12)
         const hashedPassword = await bcrypt.hash(password, salt)
         const user = await User.create({email, password:hashedPassword, name})
-        // const token = jwt.sign({_id:user._id}, process.env.JWT_SECRET,{expiresIn: process.env.JWT_EXPIRES_TIME})
 
-        res.status(200).json({message:`Registration successful. Please login `})
+        res.status(200).json({message:`Registration successful. Please login ${user['name']}`})
 
     }catch (e) {
         res.status(500).json({message: 'Something went wrong'})
@@ -59,4 +57,17 @@ exports.authorizeUser = async (req, res) => {
 exports.logout = (req, res) => {
     res.clearCookie("t")
     res.json({message: 'Signed out successfully'})
+}
+
+
+exports.requireSignin = async (req, res, next) => {
+    const{token} = req.cookies
+    if(!token){
+        return res.status(401).json({message: `You have to be logged in to access this resource`})
+    }
+    console.log(token)
+    const decoded = jwt.verify(token, process.env.JWT_SECRET)
+    req.user = await User.findById(decoded._id)
+
+    next()
 }
