@@ -2,10 +2,10 @@
   "name": "social-media-app",
   "version": "1.0.0",
   "description": "Social Media App NodeJs API",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon app.js",
+    "test": "jest",
+    "dev": "nodemon server.js",
     "lint": "prettier --check .",
     "format": "prettier --write .",
     "prettier-watch": "onchange '.' -- prettier --write {{changed}}"
@@ -30,8 +30,10 @@
     "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^28.1.1",
     "nodemon": "^2.0.16",
     "onchange": "^7.1.0",
-    "prettier": "^2.6.2"
+    "prettier": "^2.6.2",
+    "supertest": "^6.2.3"
   }
 }

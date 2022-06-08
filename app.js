@@ -21,7 +21,9 @@ app.use(cookieParser())
 // use imported app route as middleware
 app.use('/api', authRoutes)
 
-const port = process.env.PORT || 8000
-app.listen(port, () => {
-  console.log(`The API is listening on port: ${port}`)
-})
+// const port = process.env.PORT || 8000
+// app.listen(port, () => {
+//   console.log(`The API is listening on port: ${port}`)
+// })
+
+module.exports = app

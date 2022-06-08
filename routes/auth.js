@@ -13,6 +13,9 @@ router.get('/posts', auth, (req, res) => {
     posts: [{ title: 'First post' }, { title: 'Second post' }],
   })
 })
+router.get('/test', async (req, res) => {
+  res.status(200).json({ message: 'pass!' })
+})
 
 // Any route containing userId, our app will first execute this
 router.param('userId', userById)
