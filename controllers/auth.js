@@ -1,9 +1,7 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-
-require('dotenv').config()
-
 const User = require('../models/user')
+require('dotenv').config()
 
 exports.register = async (req, res) => {
   const { email, password, confirmPassword, name } = req.body
@@ -25,7 +23,7 @@ exports.register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt)
     const user = await User.create({ email, password: hashedPassword, name })
 
-    res.status(200).json({ message: `Registration successful. Please login ${user['name']}` })
+    res.status(200).json({ message: `Registration successful. Please login ${user.name}` })
   } catch (e) {
     res.status(500).json({ message: 'Something went wrong' })
   }
@@ -38,14 +36,14 @@ exports.authorizeUser = async (req, res) => {
   try {
     const user = await User.findOne({ email })
     if (!user) return res.status(401).json({ message: 'User does not exist!' })
-    const savedPassword = user['password']
+    const savedPassword = user.password
     const isAuthorized = await bcrypt.compare(password, savedPassword)
     if (isAuthorized) {
       const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRES_TIME,
       })
       const { _id, name, email } = user
-      // persist the token as 't' in cookie with expiry date
+      // persist the token as 'token' in cookie with expiry date
       res.cookie('token', token, { expire: new Date() + 9999, httpOnly: true })
       res.status(200).json({ token, user: { _id, email, name } })
     } else {
