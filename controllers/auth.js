@@ -15,7 +15,7 @@ exports.register = async (req, res) => {
       })
 
     if (password !== confirmPassword)
-      res.status(400).json({
+      return res.status(400).json({
         message: 'Passwords do not match!',
       })
 
@@ -23,9 +23,9 @@ exports.register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt)
     const user = await User.create({ email, password: hashedPassword, name })
 
-    res.status(200).json({ message: `Registration successful. Please login ${user.name}` })
+    return res.status(200).json({ message: `Registration successful. Please login ${user.name}` })
   } catch (e) {
-    res.status(500).json({ message: 'Something went wrong' })
+    return res.status(500).json({ message: 'Something went wrong' })
   }
 }
 
