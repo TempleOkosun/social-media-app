@@ -14,7 +14,7 @@ exports.auth = async (req, res, next) => {
     next()
   } catch (e) {
     if (e.name === 'TokenExpiredError') {
-      logout(req, res)
+      await logout(req, res)
     }
   }
 }

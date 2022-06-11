@@ -1,6 +1,8 @@
+// required imports
 const app = require('./app')
 const mongodb = require('./utils/db')
 
+// start server and database
 const port = process.env.PORT || 8000
 const start = async () => {
   try {
