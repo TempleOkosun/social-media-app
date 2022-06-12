@@ -1,25 +1,14 @@
 const mongoose = require('mongoose')
 
-const userSchema = new mongoose.Schema({
-  name: {
+const tweetSchema = new mongoose.Schema({
+body: {
     type: String,
     trim: true,
     required: true,
-  },
-  email: {
-    type: String,
-    trim: true,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  created: {
-    type: Date,
-    default: Date.now,
+    minLength:10,
+    maxLength:280
   },
 })
 
-const userModel = mongoose.model('User', userSchema)
-module.exports = userModel
+const tweetModel = mongoose.model('Tweet', tweetSchema)
+module.exports = tweetModel
