@@ -2,16 +2,26 @@
 const { validationResult } = require('express-validator')
 const Tweet = require('../models/tweet')
 
+// returns the most recent tweet
 exports.getTweet = async (req, res) => {
-  res.status(200).json({
-    tweets: { title: 'First' },
-  })
+  Tweet.find()
+    .sort({ _id: -1 })
+    .limit(1)
+    .select('_id body')
+    .then((tweets) => {
+      return res.status(200).json({ tweets })
+    })
+    .catch((err) => console.log(err))
 }
 
+// returns all tweets
 exports.getTweets = async (req, res) => {
-  res.status(200).json({
-    tweets: [{ title: 'First' }, { title: 'Second' }],
-  })
+  Tweet.find()
+    .select('_id body')
+    .then((tweets) => {
+      return res.status(200).json({ tweets })
+    })
+    .catch((err) => console.log(err))
 }
 
 exports.createTweet = async (req, res) => {
