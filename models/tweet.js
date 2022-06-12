@@ -1,12 +1,11 @@
+// required imports
 const mongoose = require('mongoose')
 
 const tweetSchema = new mongoose.Schema({
-body: {
+  tweet: {
     type: String,
     trim: true,
     required: true,
-    minLength:10,
-    maxLength:280
   },
 })
 
