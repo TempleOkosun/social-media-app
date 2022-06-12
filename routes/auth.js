@@ -10,7 +10,7 @@ router.post('/login', authorizeUser)
 router.get('/logout', auth, logout) // require auth to logout
 router.get('/posts', auth, (req, res) => {
   res.json({
-    posts: [{ title: 'First post' }, { title: 'Second post' }],
+    posts: [{ title: 'First tweets' }, { title: 'Second tweets' }],
   })
 })
 router.get('/test', async (req, res) => {

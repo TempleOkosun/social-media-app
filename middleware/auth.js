@@ -1,3 +1,4 @@
+// required imports
 const jwt = require('jsonwebtoken')
 const { logout } = require('../controllers/auth')
 
