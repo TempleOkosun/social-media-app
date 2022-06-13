@@ -1,13 +1,21 @@
 const express = require('express')
 const router = express.Router()
 
-const { userById, allUsers, getUser, updateUser, hasAuthorization } = require('../controllers/user')
+const {
+  userById,
+  allUsers,
+  getUser,
+  updateUser,
+  hasAuthorization,
+  deleteUser,
+} = require('../controllers/user')
 const { auth } = require('../middleware/auth')
 
 router.get('/users', allUsers)
 router.get('/user/:userId', auth, getUser)
 // we can use the same route but put http verb since it is updating
 router.put('/user/:userId', auth, hasAuthorization, updateUser)
+router.delete('/user/:userId', auth, hasAuthorization, deleteUser)
 
 // When there is a particular action - say update info required by a user
 //The url should look like: http://localhost:8000/profile/userid9765545

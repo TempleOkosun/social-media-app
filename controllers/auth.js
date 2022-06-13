@@ -65,7 +65,10 @@ exports.authorizeUser = async (req, res) => {
   }
 }
 
-exports.logout = async (req, res) => {
+exports.logout = async (req, res, next, msg = '') => {
   res.clearCookie('token')
-  return res.status(200).json({ message: 'Signed out successfully' })
+  return res.status(200).json({
+    message: `${msg} 
+    Signed out successfully`,
+  })
 }

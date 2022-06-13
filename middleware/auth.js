@@ -12,13 +12,13 @@ exports.auth = async (req, res, next) => {
     const decodedData = jwt.verify(token, process.env.JWT_SECRET, { ignoreExpiration: false })
     // req.userId = decodedData?._id
     // if the token is valid, append the verified user's id to the request object in an auth property
-    // req.userId = decodedData._id
     req.auth = decodedData._id
 
     next()
   } catch (e) {
     if (e.name === 'TokenExpiredError') {
-      await logout(req, res)
+      const msg = `Your token expired and you will be signed out.`
+      await logout(req, res, next, msg)
     }
   }
 }
