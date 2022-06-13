@@ -24,3 +24,18 @@ exports.hasAuthorization = (req, res, next) => {
   }
   next()
 }
+
+exports.allUsers = async (req, res) => {
+  User.find((err, users) => {
+    if (err) {
+      return res.status(400).json({
+        error: err,
+      })
+    }
+    res.json({ users })
+  }).select('_id name email created updated')
+}
+
+exports.getUser = async (req, res) => {
+  return res.json(req.profile)
+}

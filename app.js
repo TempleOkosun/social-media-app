@@ -11,6 +11,7 @@ dotenv.config()
 // import routes
 const authRoutes = require('./routes/auth')
 const tweetRoutes = require('./routes/tweet')
+const userRoutes = require('./routes/user')
 
 // middlewares
 app.use(morgan('dev'))
@@ -19,5 +20,6 @@ app.use(cookieParser())
 // use imported app route as middleware
 app.use('/api', authRoutes)
 app.use('/api', tweetRoutes)
+app.use('/api', userRoutes)
 
 module.exports = app
