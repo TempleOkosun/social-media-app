@@ -8,6 +8,7 @@ exports.userById = (req, res, next, id) => {
         error: 'User not found',
       })
     }
+    // add new property profile to the request object
     const { name, email, _id } = user
     req.profile = { name, email, _id }
     next()

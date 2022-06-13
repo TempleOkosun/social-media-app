@@ -6,6 +6,7 @@ const { body } = require('express-validator')
 
 const { auth } = require('../middleware/auth')
 const { getTweet, getTweets, createTweet } = require('../controllers/tweet')
+const { userById } = require('../controllers/user')
 
 router.get('/tweet', getTweet)
 router.get('/tweets', getTweets)
@@ -18,5 +19,8 @@ router.post(
   }),
   createTweet
 )
+
+// any route containing userId, our app will first execute userById
+router.param('userId', userById)
 
 module.exports = router
