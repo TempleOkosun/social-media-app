@@ -1,6 +1,7 @@
 // required imports
 const { validationResult } = require('express-validator')
 const Tweet = require('../models/tweet')
+const formidable = require('formidable')
 
 // returns the most recent tweet
 exports.getTweet = async (req, res) => {

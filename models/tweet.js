@@ -8,9 +8,17 @@ const tweetSchema = new mongoose.Schema({
     trim: true,
     required: true,
   },
+  photo: {
+    data: Buffer,
+    contentType: String,
+  },
   tweetedBy: {
     type: ObjectId,
     ref: 'User',
+  },
+  created: {
+    type: Date,
+    default: Date.now,
   },
 })
 
