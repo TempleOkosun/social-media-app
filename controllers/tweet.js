@@ -19,6 +19,7 @@ exports.getTweet = async (req, res) => {
 // returns all tweets
 exports.getTweets = async (req, res) => {
   Tweet.find()
+    .populate('tweetedBy', '_id name')
     .select('_id body')
     .then((tweets) => {
       return res.status(200).json({ tweets })
