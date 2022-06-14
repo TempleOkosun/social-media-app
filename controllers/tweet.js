@@ -2,6 +2,7 @@
 const { validationResult } = require('express-validator')
 const Tweet = require('../models/tweet')
 const formidable = require('formidable')
+const fs = require('fs')
 
 // returns the most recent tweet
 exports.getTweet = async (req, res) => {
@@ -48,16 +49,44 @@ exports.createTweet = async (req, res) => {
     return res.status(400).json({ errors: errors.array() })
   }
 
-  // save validated tweet to database
-  const tweet = new Tweet(req.body)
-  tweet.save((err, result) => {
+  const form = formidable({ multiples: true })
+  form.parse(req, (err, fields, files) => {
     if (err) {
       return res.status(400).json({
-        error: err,
+        error: `Image could not be uploaded`,
       })
     }
-    res.status(200).json({
-      tweet: result,
+    // we set tweet body to fields parsed by formidable
+    const tweet = new Tweet(fields)
+    // We add the user who posted the tweet
+    tweet.tweetedBy = req.profile
+    if (files.photo) {
+      tweet.photo.data = fs.readFileSync(files.photo.path)
+      tweet.photo.contentType = files.photo.type
+    }
+    // save tweet to database
+    tweet.save((err, result) => {
+      if (err) {
+        return res.status(400).json({
+          error: err,
+        })
+      }
+      res.status(200).json({
+        tweet: result,
+      })
     })
   })
+
+  // save validated tweet to database
+  //const tweet = new Tweet(req.body)
+  // tweet.save((err, result) => {
+  //   if (err) {
+  //     return res.status(400).json({
+  //       error: err,
+  //     })
+  //   }
+  //   res.status(200).json({
+  //     tweet: result,
+  //   })
+  // })
 }
