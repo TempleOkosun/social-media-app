@@ -77,17 +77,18 @@ exports.createTweet = async (req, res) => {
       })
     })
   })
+}
 
-  // save validated tweet to database
-  //const tweet = new Tweet(req.body)
-  // tweet.save((err, result) => {
-  //   if (err) {
-  //     return res.status(400).json({
-  //       error: err,
-  //     })
-  //   }
-  //   res.status(200).json({
-  //     tweet: result,
-  //   })
-  // })
+exports.tweetsByUser = async (req, res) => {
+  Tweet.find({ tweetedBy: req.profile._id })
+    .populate('tweetedBy', '_id name')
+    .sort('_created')
+    .exec((err, tweets) => {
+      if (err) {
+        return res.status(400).json({
+          error: err,
+        })
+      }
+      return res.status(200).json(tweets)
+    })
 }
