@@ -4,11 +4,28 @@ const Tweet = require('../models/tweet')
 const formidable = require('formidable')
 const fs = require('fs')
 
+exports.tweetById = async (req, res, next, id) => {
+  await Tweet.findById(id)
+    .populate('tweetedBy', '_id name')
+    .exec((err, tweet) => {
+      if (err || !tweet) {
+        return res.status(400).json({
+          error: err,
+        })
+      }
+      // make tweet profile available in the request object
+      // add new property tweet to the request object
+      req.tweet = tweet
+      next()
+    })
+}
+
 // returns the most recent tweet
 exports.getTweet = async (req, res) => {
   Tweet.find()
     .sort({ _id: -1 })
     .limit(1)
+    .populate('tweetedBy', '_id name')
     .select('_id body')
     .then((tweets) => {
       return res.status(200).json({ tweets })
@@ -91,4 +108,30 @@ exports.tweetsByUser = async (req, res) => {
       }
       return res.status(200).json(tweets)
     })
+}
+
+exports.isTweeter = async (req, res, next) => {
+  const isPoster = req.tweet && req.auth && req.tweet.tweetedBy._id == req.auth
+  if (!isPoster) {
+    return res.status(403).json({
+      error: 'User is not authorized',
+    })
+  }
+  next()
+}
+
+exports.deleteTweet = async (req, res) => {
+  const query = {
+    _id: req.tweet._id,
+  }
+  console.log(query)
+  // TODO: improve handling error from delete action on database
+  const deleteTweet = await Tweet.deleteOne({ query })
+  // if update is successful an object with acknowledge: true is returned
+  if (deleteTweet.acknowledged) {
+    return res.status(200).json({
+      message: `Tweet deleted successfully.`,
+    })
+  }
+  return res.status(400).json({ error: `Something went wrong while updating user info` })
 }
