@@ -3,21 +3,24 @@ const _ = require('lodash')
 const User = require('../models/user')
 const { logout } = require('./auth')
 
+// finds a user by id
 exports.userById = async (req, res, next, id) => {
   User.findById(id).exec((err, user) => {
     if (err || !user) {
       return res.status(400).json({
-        error: 'User not found',
+        message: 'User not found',
+        error: err,
       })
     }
     // user was found at this point
-    // add new property profile to the request object
+    // add new property profile with user details to the request object
     const { name, email, _id } = user
     req.profile = { name, email, _id }
     next()
   })
 }
 
+// check if user has the right to carry out the action
 exports.hasAuthorization = (req, res, next) => {
   const authorized = req.profile && req.auth && req.profile._id == req.auth
   if (!authorized) {
@@ -28,6 +31,7 @@ exports.hasAuthorization = (req, res, next) => {
   next()
 }
 
+// returns all users
 exports.allUsers = async (req, res) => {
   User.find((err, users) => {
     if (err) {
@@ -45,6 +49,7 @@ exports.getUser = async (req, res) => {
   return res.json(req.profile)
 }
 
+// update user
 exports.updateUser = async (req, res) => {
   const current_user_details = req.profile
   // user will be updated based on the request body
@@ -72,6 +77,7 @@ exports.updateUser = async (req, res) => {
   })
 }
 
+// delete user
 exports.deleteUser = async (req, res, next) => {
   const query = {
     _id: req.profile._id,

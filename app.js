@@ -13,13 +13,13 @@ dotenv.config()
 const authRoutes = require('./routes/auth')
 const tweetRoutes = require('./routes/tweet')
 const userRoutes = require('./routes/user')
+
 // api documentation
 app.get('/api', (req, res) => {
   fs.readFile('docs/apiDocs.json', (err, data) => {
     if (err) {
       return res.status(400).json({
         error: err,
-        // error: `file err`,
       })
     }
     const docs = JSON.parse(data.toString())
@@ -31,6 +31,7 @@ app.get('/api', (req, res) => {
 app.use(morgan('dev'))
 app.use(bodyParser.json())
 app.use(cookieParser())
+
 // use imported app route as middleware
 app.use('/api', authRoutes)
 app.use('/api', tweetRoutes)

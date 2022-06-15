@@ -1,3 +1,4 @@
+// import required library
 const mongoose = require('mongoose')
 
 exports.connect = (uri) => {
