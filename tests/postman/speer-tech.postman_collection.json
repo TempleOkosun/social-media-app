@@ -1,0 +1,423 @@
+{
+	"info": {
+		"_postman_id": "74ef188c-200c-4ac8-9c85-aef7edd565cd",
+		"name": "speer-tech",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4151217"
+	},
+	"item": [
+		{
+			"name": "social-media-app",
+			"item": [
+				{
+					"name": "Authentication",
+					"item": [
+						{
+							"name": "register",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"John Doe 4\",\r\n    \"email\":\"jdoe4@gmail.com\",\r\n    \"password\":\"password4\",\r\n    \"confirmPassword\":\"password4\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8000/api/register",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"register"
+									]
+								},
+								"description": "Register user and assign token"
+							},
+							"response": []
+						},
+						{
+							"name": "login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"jdoe1@gmail.com\",\r\n    \"password\":\"password1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8000/api/login",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"login"
+									]
+								},
+								"description": "Register user and assign token"
+							},
+							"response": []
+						},
+						{
+							"name": "logout",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjlmYzE3NTkyNzNkNzk2ZTEwMThmZDciLCJpYXQiOjE2NTQ2ODQ1NDgsImV4cCI6MTY1NDY4ODE0OH0.bOHaeJ8RoT4lOFp_1JMaf0jHDi5N-Nd-H6nUnI5jMps",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"jdoe@gmail.com\",\r\n    \"password\":\"password\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8000/api/logout",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"logout"
+									]
+								},
+								"description": "Logging out"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Tweets",
+					"item": [
+						{
+							"name": "tweet",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjlmYzE3NTkyNzNkNzk2ZTEwMThmZDciLCJpYXQiOjE2NTQ2ODM0MDAsImV4cCI6MTY1NDY4NzAwMH0.houi_xPtdrMlaESB3ufN2jbMkliQYs61EzdIXJraB1Y",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8000/api/tweet",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"tweet"
+									]
+								},
+								"description": "Details of a single tweet "
+							},
+							"response": []
+						},
+						{
+							"name": "tweets",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjlmYzE3NTkyNzNkNzk2ZTEwMThmZDciLCJpYXQiOjE2NTQ2ODM0MDAsImV4cCI6MTY1NDY4NzAwMH0.houi_xPtdrMlaESB3ufN2jbMkliQYs61EzdIXJraB1Y",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8000/api/tweets",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"tweets"
+									]
+								},
+								"description": "Details of all tweets from a user"
+							},
+							"response": []
+						},
+						{
+							"name": "new tweet",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "body",
+											"value": "this is a new tweet 4",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:8000/api/tweet/new/62a7dceb6a126e37b48ea6c0",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"tweet",
+										"new",
+										"62a7dceb6a126e37b48ea6c0"
+									]
+								},
+								"description": "Creating a new tweet"
+							},
+							"response": []
+						},
+						{
+							"name": "delete tweet",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8000/api/tweet/",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"tweet",
+										""
+									]
+								},
+								"description": "Delete a user"
+							},
+							"response": []
+						},
+						{
+							"name": "tweets by user",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8000/api/tweets/by/62a976f61d0f3c0c57c0cac0",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"tweets",
+										"by",
+										"62a976f61d0f3c0c57c0cac0"
+									]
+								},
+								"description": "Delete a user"
+							},
+							"response": []
+						},
+						{
+							"name": "update tweet",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "localhost:8000/api/tweet/",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"tweet",
+										""
+									]
+								},
+								"description": "Update tweet"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "users",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8000/api/users",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"users"
+									]
+								},
+								"description": "Get all users"
+							},
+							"response": []
+						},
+						{
+							"name": "user",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmEzZWU4OGJmOTJhM2IzNDg0MTIwYzgiLCJpYXQiOjE2NTUxMzc5NDYsImV4cCI6MTY1NTE0MTU0Nn0.kpkksmksHVcOIGWOyEDnu1BJeyXMf-4vra8QIujiHh8",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:8000/api/user/629fac702061f71992dc2d33",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"user",
+										"629fac702061f71992dc2d33"
+									]
+								},
+								"description": "Gets a single user "
+							},
+							"response": []
+						},
+						{
+							"name": "update user",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "localhost:8000/api/user/629fac702061f71992dc2d33",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"user",
+										"629fac702061f71992dc2d33"
+									]
+								},
+								"description": "Update a user profile"
+							},
+							"response": []
+						},
+						{
+							"name": "delete user",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8000/api/user/629fac702061f71992dc2d33",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"user",
+										"629fac702061f71992dc2d33"
+									]
+								},
+								"description": "Delete a user"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
