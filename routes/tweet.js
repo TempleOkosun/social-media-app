@@ -3,7 +3,6 @@ const express = require('express')
 const router = express.Router()
 
 const { body } = require('express-validator')
-
 const { auth } = require('../middleware/auth')
 const {
   getTweet,
@@ -13,6 +12,7 @@ const {
   tweetById,
   isTweeter,
   deleteTweet,
+  updateTweet,
 } = require('../controllers/tweet')
 const { userById, hasAuthorization } = require('../controllers/user')
 
@@ -31,6 +31,7 @@ router.post(
 )
 router.get('/tweets/by/:userId', auth, tweetsByUser)
 router.delete('/tweet/:tweetId', auth, isTweeter, deleteTweet)
+router.put('/tweet/:tweetId', auth, isTweeter, updateTweet)
 
 // any route containing userId, our app will first execute userById
 router.param('userId', userById)

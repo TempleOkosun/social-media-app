@@ -4,12 +4,13 @@ const User = require('../models/user')
 const { logout } = require('./auth')
 
 exports.userById = async (req, res, next, id) => {
-  await User.findById(id).exec((err, user) => {
+  User.findById(id).exec((err, user) => {
     if (err || !user) {
       return res.status(400).json({
         error: 'User not found',
       })
     }
+    // user was found at this point
     // add new property profile to the request object
     const { name, email, _id } = user
     req.profile = { name, email, _id }
@@ -38,6 +39,8 @@ exports.allUsers = async (req, res) => {
   }).select('_id name email created updated')
 }
 
+// since any route having userId will first run userById
+// then the required user's info will be added to the req.profile
 exports.getUser = async (req, res) => {
   return res.json(req.profile)
 }

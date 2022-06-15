@@ -3,9 +3,10 @@ const { validationResult } = require('express-validator')
 const Tweet = require('../models/tweet')
 const formidable = require('formidable')
 const fs = require('fs')
+const _ = require('lodash')
 
 exports.tweetById = async (req, res, next, id) => {
-  await Tweet.findById(id)
+  Tweet.findById(id)
     .populate('tweetedBy', '_id name')
     .exec((err, tweet) => {
       if (err || !tweet) {
@@ -27,8 +28,8 @@ exports.getTweet = async (req, res) => {
     .limit(1)
     .populate('tweetedBy', '_id name')
     .select('_id body')
-    .then((tweets) => {
-      return res.status(200).json({ tweets })
+    .then((tweet) => {
+      return res.status(200).json({ tweet })
     })
     .catch((err) => console.log(err))
 }
@@ -124,14 +125,43 @@ exports.deleteTweet = async (req, res) => {
   const query = {
     _id: req.tweet._id,
   }
-  console.log(query)
-  // TODO: improve handling error from delete action on database
-  const deleteTweet = await Tweet.deleteOne({ query })
-  // if update is successful an object with acknowledge: true is returned
-  if (deleteTweet.acknowledged) {
+  Tweet.deleteOne(query, (err, result) => {
+    if (err) {
+      return res.status(400).json({
+        err: err,
+      })
+    }
+    // delete was successful at this point
     return res.status(200).json({
-      message: `Tweet deleted successfully.`,
+      message: `tweet successfully deleted`,
+      result: result,
     })
+  })
+}
+
+// TODO: tweet should be updated via formidable incase there is photo to add
+exports.updateTweet = async (req, res) => {
+  const current_tweet = req.tweet
+  // tweet will be updated based on the request body
+  const updated_tweet = _.extend(current_tweet, req.body) // will mutate the source object current_user_details with req.body
+  // we can also add the tweet updated field at this point
+  updated_tweet.updated = Date.now()
+  // save updated tweet to database
+  const query = {
+    _id: req.tweet._id,
   }
-  return res.status(400).json({ error: `Something went wrong while updating user info` })
+
+  Tweet.updateOne(query, updated_tweet, (err, result) => {
+    if (err) {
+      return res.status(400).json({
+        err: err,
+      })
+    } else {
+      // update was successful at this point
+      return res.status(200).json({
+        message: `tweet successfully updated`,
+        result: result,
+      })
+    }
+  })
 }
