@@ -1,0 +1,4 @@
+MONGO_URI=mongodb+srv://user-temple:qjJizKyH0zilIm41@cluster0.j7geryt.mongodb.net/social-media-app
+PORT=8000
+JWT_SECRET=GHFJFJFKK7474646BNDJDKDKDK
+JWT_EXPIRES_TIME=1h
