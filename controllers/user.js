@@ -1,6 +1,7 @@
 // required imports
 const _ = require('lodash')
 const User = require('../models/user')
+const { logout } = require('./auth')
 
 exports.userById = async (req, res, next, id) => {
   await User.findById(id).exec((err, user) => {
@@ -18,12 +19,6 @@ exports.userById = async (req, res, next, id) => {
 
 exports.hasAuthorization = (req, res, next) => {
   const authorized = req.profile && req.auth && req.profile._id == req.auth
-  // console.log(`Here is authorized : ${authorized}`)
-  // console.log(` Here is req.profile ${req.profile}`)
-  // console.log(` Here is req.auth ${req.auth}`)
-  // console.log(` Here is req.profile._id ${req.profile._id}`)
-  // console.log(` Here is req.profile && req.auth ${req.profile._id == req.auth}`)
-
   if (!authorized) {
     return res.status(403).json({
       error: 'User is not authorized',
@@ -59,28 +54,37 @@ exports.updateUser = async (req, res) => {
   }
   // pls note we do not want password to be update like this
   // TODO: password updating logic
-  // TODO: improve handling error from update action on database
-  const user = await User.updateOne(query, updated_user_details)
-  // if update is successful an object with acknowledge: true is returned
-  if (user.acknowledged) {
-    return res.status(200).json({
-      message: `update successful`,
-    })
-  }
-  return res.status(400).json({ error: `Something went wrong while updating user info` })
+  User.updateOne(query, updated_user_details, (err, result) => {
+    if (err) {
+      return res.status(400).json({
+        err: err,
+      })
+    } else {
+      // update was successful at this point
+      return res.status(200).json({
+        message: `user successfully updated`,
+        result: result,
+      })
+    }
+  })
 }
 
-exports.deleteUser = async (req, res) => {
+exports.deleteUser = async (req, res, next) => {
   const query = {
     _id: req.profile._id,
   }
-  // TODO: improve handling error from delete action on database
-  const user = await User.deleteOne({ query })
-  // if update is successful an object with acknowledge: true is returned
-  if (user.acknowledged) {
-    return res.status(200).json({
-      message: `User deleted successfully. Bye`,
-    })
-  }
-  return res.status(400).json({ error: `Something went wrong while updating user info` })
+  User.deleteOne(query, (err, result) => {
+    if (err) {
+      return res.status(400).json({
+        err: err,
+      })
+    } else {
+      // delete was successful at this point
+      const msg = {
+        message: `user successfully deleted and session ended.`,
+        result: result,
+      }
+      logout(req, res, next, msg)
+    }
+  })
 }

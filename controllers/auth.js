@@ -67,7 +67,7 @@ exports.authorizeUser = async (req, res) => {
 
 exports.logout = async (req, res, next, msg = '') => {
   res.clearCookie('token')
-  const displayMsg = msg ? `${msg}` : `Signed out successfully`
+  const displayMsg = msg ? msg : `Signed out successfully`
   return res.status(200).json({
     message: displayMsg,
   })
