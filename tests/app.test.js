@@ -6,10 +6,6 @@ const { register, login } = require('./utils/utils')
 const { invalidRegisteration, validRegisteration } = require('../tests/data/users')
 
 const request = require('supertest')
-const cookieParser = require('cookie-parser')
-const assert = require('assert')
-const should = require('should')
-const e = require('express')
 
 // db
 beforeAll(async () => await mongodb.connect())
@@ -35,18 +31,16 @@ describe('Tests for register end point', () => {
 })
 
 describe('Tests for authenticated end point', () => {
-  it('should fail for unauthenticated requests', async () => {
-    const res = await request(app).get('/api/posts')
-    expect(res.statusCode).toEqual(401)
-    expect(res.body.message).toEqual('You have to be logged in to access this resource')
+  it('should pass for all requests', async () => {
+    const res = await request(app).get('/api/tweets')
+    expect(res.statusCode).toEqual(200)
   })
 
   it('should pass for authenticated requests', async () => {
     const { name, email, password, confirmPassword } = validRegisteration
     await register(name, email, password, confirmPassword)
     const cookie = await login(email, password)
-    const res = await request(app).get('/api/posts').set('cookie', cookie)
+    const res = await request(app).get('/api/tweets').set('cookie', cookie)
     expect(res.statusCode).toEqual(200)
-    expect(res.body.posts).toHaveLength(2)
   })
 })
