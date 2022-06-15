@@ -1,12 +1,13 @@
 {
   "/api": "api docs",
-  "/api/signup": "signup",
-  "/api/signin": "signin",
-  "/api/signout": "signout",
+  "/api/register": "register",
+  "/api/login": "login",
+  "/api/logout": "logout",
   "/api/users": "get all users",
-  "/api/user/:userId": "get/update/delete user",
-  "/api/posts": "get all posts",
-  "/api/post/new/:userId": "create new post",
-  "/api/posts/by/:userId": "get posts by user",
-  "/api/post/:postId": "update/delete post"
+  "/api/user/:userId": "get a user/update/delete user",
+  "/api/tweets": "get all tweets",
+  "/api/tweet": "get most recent tweet in the database",
+  "/api/tweet/new/:userId": "create new tweet",
+  "/api/tweets/by/:userId": "get tweets by user",
+  "/api/tweet/:tweetId": "update/delete tweet"
 }
